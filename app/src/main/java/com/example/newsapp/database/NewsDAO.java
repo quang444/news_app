@@ -14,8 +14,9 @@ public interface NewsDAO {
 
     @Query("SELECT * FROM news11")
     List<News> getListNews();
-    @Query("DELETE FROM news11 WHERE news_id = :newsId ")
-    void deleteNews(int newsId);
+
     @Query("SELECT COUNT(*) FROM news11 where title = :desiredArticle")
     int checkIfArticleExists(String desiredArticle);
+
+
 }

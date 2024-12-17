@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newsapp.Models.News;
+import com.example.newsapp.Models.favourite;
 import com.example.newsapp.R;
 import com.example.newsapp.view.SelectListener;
 import com.squareup.picasso.Picasso;
@@ -20,13 +21,15 @@ import java.util.List;
 
 public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.MyViewholder> {
     private Context context;
-    private List<News> news;
+    private List<favourite> favourites;
     SelectListener listener;
+    String  userId;
 
-    public LikeAdapter(Context context, List<News> news, SelectListener listener) {
+    public LikeAdapter(Context context, List<favourite> favourites, SelectListener listener, String userId) {
         this.context = context;
-        this.news = news;
+        this.favourites = favourites;
         this.listener = listener;
+        this.userId = userId;
     }
 
     @NonNull
@@ -38,21 +41,21 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.MyViewholder> 
     }
     @Override
     public void onBindViewHolder(@NonNull MyViewholder holder, int position) {
-        holder.text_title.setText(news.get(position).getTitle());
-        holder.text_source.setText(news.get(position).getSource().getName());
-        if(news.get(position).getUrlToImage() != null){
-            Picasso.get().load(news.get(position).getUrlToImage()).into(holder.img_headline);
+        holder.text_title.setText(favourites.get(position).getNews().getTitle());
+        holder.text_source.setText(favourites.get(position).getNews().getSource().getName());
+        if(favourites.get(position).getNews().getUrlToImage() != null){
+            Picasso.get().load(favourites.get(position).getNews().getUrlToImage()).into(holder.img_headline);
         }
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.OnNewsClicked(news.get(position));
+                listener.OnNewsClicked(favourites.get(position).getNews());
             }
         });
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                listener.OnNewsLongcClicked(news.get(position));
+                listener.OnNewsLongcClicked(favourites.get(position));
                 return true;
 
             }
@@ -62,7 +65,7 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.MyViewholder> 
 
     @Override
     public int getItemCount() {
-        return news.size();
+        return favourites.size();
     }
 
     public class MyViewholder extends RecyclerView.ViewHolder{

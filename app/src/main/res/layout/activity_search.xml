@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/img_7"
     tools:context=".view.SearchActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -28,6 +29,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.SearchView
+            android:background="@drawable/title_bgr"
             android:id="@+id/seach_view1"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"

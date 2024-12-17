@@ -12,9 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.newsapp.Models.News;
+import com.example.newsapp.Models.favourite;
 import com.example.newsapp.R;
 import com.example.newsapp.adapter.LikeAdapter;
 import com.example.newsapp.database.NewsDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -23,13 +26,25 @@ public class LikeActivity extends AppCompatActivity implements SelectListener {
     Dialog dialog;
     Button btn_delete, btn_cancel;
     News news;
+    String userId;
+    LikeAdapter likeAdapter ;
+    List<favourite> favourites;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewed);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userId = user.getUid();
+        } else {
+            Toast.makeText(this, "Vui lòng đăng nhập để lưu bài viết", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-        List<News> news = NewsDatabase.getInstance(LikeActivity.this).newsDAO().getListNews();
-        LikeAdapter likeAdapter = new LikeAdapter(LikeActivity.this, news, this);
+        favourites = NewsDatabase.getInstance(LikeActivity.this).favouriteDAO().getAllNewsForUser(userId);
+        likeAdapter = new LikeAdapter(LikeActivity.this, favourites, this, userId);
         recyclerView = findViewById(R.id.recycler_like);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(likeAdapter);
@@ -45,9 +60,9 @@ public class LikeActivity extends AppCompatActivity implements SelectListener {
     }
 
     @Override
-    public void OnNewsLongcClicked(News news) {
+    public void OnNewsLongcClicked(favourite favourites) {
 
-        deleteNewsFromDatabase(news.getNews_id());
+        deleteNewsFromDatabase(favourites.getId());
     }
 
 
@@ -65,9 +80,11 @@ public class LikeActivity extends AppCompatActivity implements SelectListener {
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NewsDatabase.getInstance(LikeActivity.this).newsDAO().deleteNews(id);
+                NewsDatabase.getInstance(LikeActivity.this).favouriteDAO().deleteNews(id);
                 Toast.makeText(LikeActivity.this,"Xoa thanh cong ", Toast.LENGTH_SHORT).show();
-
+                favourites.removeIf(favourite -> favourite.getId() == id );
+                likeAdapter.notifyDataSetChanged();
+                dialog.dismiss();
             }
         });
         dialog.show();

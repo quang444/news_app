@@ -39,17 +39,7 @@
         android:inputType="textPassword"
         android:background="@drawable/boder"
         />
-    <EditText
 
-        android:layout_marginTop="10dp"
-        android:paddingTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Confirm Password..."
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
-        android:background="@drawable/boder"
-        />
     <Button
         android:background="@drawable/btn"
         android:layout_marginTop="30dp"

@@ -7,8 +7,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.newsapp.Models.News;
+import com.example.newsapp.Models.favourite;
 
-@Database(entities = {News.class}, version = 1 )
+@Database(entities = {favourite.class}, version = 1 )
 
 public abstract class NewsDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "news.db";
@@ -16,12 +17,13 @@ public abstract class NewsDatabase extends RoomDatabase {
     public static synchronized NewsDatabase getInstance(Context context){
         if(instance ==  null){
             instance = Room.databaseBuilder(context.getApplicationContext(),NewsDatabase.class, DATABASE_NAME )
+                    .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .build();
         }
         return instance;
     }
 
-    public abstract NewsDAO newsDAO();
+    public abstract FavouriteDAO favouriteDAO();
 
 }

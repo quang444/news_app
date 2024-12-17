@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.example.newsapp.Models.News;
 import com.example.newsapp.Models.NewsApiResponse;
+import com.example.newsapp.Models.favourite;
 import com.example.newsapp.R;
 import com.example.newsapp.retrofit.APIService;
 import com.example.newsapp.adapter.CustomAdapter;
@@ -42,17 +43,19 @@ public class SearchActivity extends AppCompatActivity implements SelectListener 
 
         context = getApplicationContext();
         dialog = new ProgressDialog(this);
-        dialog.setTitle("loading...<3");
-        dialog.show();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Call<NewsApiResponse> call = APIService.ApiService.searchNews( query, null, null, "0cc29eea5cdf4e789ff606920b241cd3");
+                dialog.setTitle("loading...");
+                dialog.show();
+                Call<NewsApiResponse> call = APIService.ApiService.searchNews( query, "2024-04-30", "publishedAt", "0cc29eea5cdf4e789ff606920b241cd3");
                 call.enqueue(new Callback<NewsApiResponse>() {
                     @Override
                     public void onResponse(Call<NewsApiResponse> call, Response<NewsApiResponse> response) {
                         if (response.isSuccessful()) {
                             if (response.body() != null && response.body().getStatus().equals("ok"))
+
                                 showNews(response.body().getArticle());
                             dialog.dismiss();
                         } else {
@@ -92,7 +95,7 @@ public class SearchActivity extends AppCompatActivity implements SelectListener 
     }
 
     @Override
-    public void OnNewsLongcClicked(News news) {
+    public void OnNewsLongcClicked(favourite favourites) {
 
     }
 }

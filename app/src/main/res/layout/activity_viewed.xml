@@ -10,10 +10,10 @@
         android:id="@+id/text_view_title"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@drawable/img"
+        android:background="@drawable/title_bgr"
         android:gravity="center"
         android:padding="8dp"
-        android:text="List of saved articles"
+        android:text="Favourite articles"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />
